@@ -1,0 +1,38 @@
+{
+    "name": "eduarte-ha-bridge",
+    "version": "2.4.0",
+    "description": "Bridge that exposes an Eduarte student portal agenda to Home Assistant as an iCalendar feed and a JSON state endpoint.",
+    "main": "dist/index.js",
+    "scripts": {
+        "start": "node dist/index.js",
+        "build": "tsc",
+        "dev": "tsc-watch --onSuccess \"node dist/index.js\"",
+        "probe": "tsc && node dist/probe.js",
+        "test": "tsc && node --test \"dist/**/*.test.js\""
+    },
+    "keywords": [
+        "eduarte",
+        "home-assistant",
+        "ical"
+    ],
+    "license": "MIT",
+    "dependencies": {
+        "dotenv": "^16.4.5",
+        "node-html-parser": "^6.1.13",
+        "puppeteer": "^23.4.0",
+        "totp-generator": "^1.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "^22.7.4",
+        "@types/totp-generator": "^0.0.8",
+        "tsc-watch": "^6.2.0",
+        "typescript": "^5.6.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rononline/eduarte-homeassistant.git"
+    },
+    "bugs": {
+        "url": "https://github.com/rononline/eduarte-homeassistant/issues"
+    }
+}

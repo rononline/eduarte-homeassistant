@@ -1,0 +1,175 @@
+# Home Assistant package voor de Eduarte bridge.
+#
+# Plaats dit bestand in /config/packages/eduarte.yaml en zet in configuration.yaml:
+#
+#   homeassistant:
+#     packages: !include_dir_named packages
+#
+# Zet in /config/secrets.yaml (pas het IP-adres aan als dat afwijkt):
+#
+#   eduarte_url_state: http://<ip-van-je-ha>:8099/state.json
+#   eduarte_auth: "Bearer <api_token uit de app-instellingen>"
+#
+# De kalender-URL voer je los in bij de Remote Calendar-integratie:
+#
+#   http://<ip-van-je-ha>:8099/calendar.ics?token=<api_token>
+#
+# Laat api_token in de app leeg als je geen token wilt; verwijder dan het
+# headers-blok hieronder. Herladen na wijzigingen: Ontwikkelhulpmiddelen ->
+# Acties -> rest.reload.
+
+rest:
+  - resource: !secret eduarte_url_state
+    scan_interval: 300
+    timeout: 30
+    headers:
+      Authorization: !secret eduarte_auth
+
+    sensor:
+      - name: Eduarte status
+        unique_id: eduarte_status
+        icon: mdi:school-outline
+        value_template: "{{ value_json.status }}"
+        json_attributes:
+          - last_update
+          - last_attempt
+          - last_error
+
+      - name: Eduarte lessen vandaag
+        unique_id: eduarte_lessons_today
+        icon: mdi:calendar-today
+        unit_of_measurement: lessen
+        state_class: measurement
+        value_template: "{{ value_json.today.lesson_count }}"
+        json_attributes_path: "$.today"
+        json_attributes:
+          - date
+          - first_start
+          - last_end
+          - lessons
+          - on_placement
+          - placement
+
+      - name: Eduarte lessen morgen
+        unique_id: eduarte_lessons_tomorrow
+        icon: mdi:calendar-arrow-right
+        unit_of_measurement: lessen
+        state_class: measurement
+        value_template: "{{ value_json.tomorrow.lesson_count }}"
+        json_attributes_path: "$.tomorrow"
+        json_attributes:
+          - date
+          - first_start
+          - last_end
+          - lessons
+
+      # zonder availability rendert een timestamp-sensor 'None' op lesvrije dagen,
+      # wat bij elke polling een waarschuwing in het logboek oplevert.
+      - name: Eduarte eerste les vandaag
+        unique_id: eduarte_first_lesson_today
+        icon: mdi:clock-start
+        device_class: timestamp
+        availability: "{{ value_json.today.first_start is not none }}"
+        value_template: "{{ value_json.today.first_start }}"
+
+      - name: Eduarte laatste les vandaag
+        unique_id: eduarte_last_lesson_today
+        icon: mdi:clock-end
+        device_class: timestamp
+        availability: "{{ value_json.today.last_end is not none }}"
+        value_template: "{{ value_json.today.last_end }}"
+
+      - name: Eduarte huidige les
+        unique_id: eduarte_current_lesson
+        icon: mdi:book-open-variant
+        value_template: >-
+          {{ value_json.current_lesson.name if value_json.current_lesson else 'geen les' }}
+        json_attributes_path: "$.current_lesson"
+        json_attributes:
+          - location
+          - teacher
+          - class
+          - start
+          - end
+          - absence_status
+          - homework
+
+      - name: Eduarte volgende les
+        unique_id: eduarte_next_lesson
+        icon: mdi:skip-next-outline
+        value_template: >-
+          {{ value_json.next_lesson.name if value_json.next_lesson else 'geen les' }}
+        json_attributes_path: "$.next_lesson"
+        json_attributes:
+          - location
+          - teacher
+          - class
+          - date
+          - start
+          - end
+          - homework
+
+      - name: Eduarte volgende les start
+        unique_id: eduarte_next_lesson_start
+        icon: mdi:clock-outline
+        device_class: timestamp
+        availability: "{{ value_json.next_lesson is not none }}"
+        value_template: "{{ value_json.next_lesson.start }}"
+
+      - name: Eduarte absenties vandaag
+        unique_id: eduarte_absences_today
+        icon: mdi:account-alert-outline
+        unit_of_measurement: lessen
+        state_class: measurement
+        value_template: "{{ value_json.absence.today_absent }}"
+        json_attributes_path: "$.absence"
+        json_attributes:
+          - today_present
+          - today_not_registered
+          - week_absent
+          - total_absent
+          - last_absence
+
+      - name: Eduarte absenties deze week
+        unique_id: eduarte_absences_week
+        icon: mdi:account-alert
+        unit_of_measurement: lessen
+        state_class: measurement
+        value_template: "{{ value_json.absence.week_absent }}"
+        json_attributes_path: "$.absence"
+        json_attributes:
+          - recent_absent_lessons
+          - absent_lessons
+
+      - name: Eduarte huiswerk
+        unique_id: eduarte_homework
+        icon: mdi:notebook-edit-outline
+        unit_of_measurement: opdrachten
+        state_class: measurement
+        value_template: "{{ value_json.homework | count }}"
+        json_attributes:
+          - homework
+
+    binary_sensor:
+      - name: Eduarte absent gemeld
+        unique_id: eduarte_absent_flag
+        device_class: problem
+        value_template: "{{ value_json.absence.today_absent > 0 }}"
+
+      - name: Eduarte les bezig
+        unique_id: eduarte_lesson_in_progress
+        icon: mdi:human-male-board
+        value_template: "{{ value_json.current_lesson is not none }}"
+
+      # BPV vult een hele dag; het telt niet als les maar je wilt het wel weten.
+      - name: Eduarte op stage
+        unique_id: eduarte_on_placement
+        icon: mdi:briefcase-outline
+        value_template: "{{ value_json.today.on_placement }}"
+
+      # json_attributes werkt niet op een rest-binary_sensor; de details staan
+      # als attributen op sensor.eduarte_status.
+      - name: Eduarte gegevens verouderd
+        unique_id: eduarte_data_stale
+        device_class: problem
+        value_template: "{{ value_json.status in ['error', 'stale'] }}"

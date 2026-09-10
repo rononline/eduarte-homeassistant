@@ -1,0 +1,44 @@
+name: Eduarte bridge
+version: "2.4.0"
+slug: eduarte_bridge
+description: Zet het Eduarte-rooster om in een iCalendar-feed en een JSON-status voor Home Assistant.
+url: https://github.com/rononline/eduarte-homeassistant
+arch:
+  - amd64
+  - aarch64
+init: false
+startup: application
+boot: auto
+ports:
+  8099/tcp: 8099
+ports_description:
+  8099/tcp: iCalendar-feed (/calendar.ics) en status (/state.json)
+watchdog: http://[HOST]:[PORT:8099]/health
+options:
+  portal_url: ""
+  eduarte_email: ""
+  eduarte_password: ""
+  totp_secret: ""
+  is_microsoft_login: true
+  api_token: ""
+  calendar_name: Rooster
+  placement_names: BPV
+  refresh_interval: 30
+  retry_interval: 5
+  history_days: 90
+  weeks_ahead: 4
+  debug: false
+schema:
+  portal_url: url
+  eduarte_email: str
+  eduarte_password: password
+  totp_secret: password?
+  is_microsoft_login: bool
+  api_token: password?
+  calendar_name: str
+  placement_names: str
+  refresh_interval: int(5,720)
+  retry_interval: int(1,120)
+  history_days: int(0,730)
+  weeks_ahead: int(1,26)
+  debug: bool

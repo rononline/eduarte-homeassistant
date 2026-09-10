@@ -6,7 +6,7 @@ een JSON-status. Bedoeld voor ouders en studenten die hun rooster in Home
 Assistant willen hebben in plaats van steeds op het portaal in te loggen.
 
 Afgeleid van [reneax/eduarte-bot](https://github.com/reneax/eduarte-bot), waarin
-dezelfde scraper een Discord-bot voedde. Die scraper (`src/api/`) is de kern van
+dezelfde scraper een Discord-bot voedde. Die scraper (`eduarte_bridge/src/api/`) is de kern van
 dit project; de Discord-laag is vervangen door een HTTP-service. Met dank aan
 reneax voor het uitzoekwerk aan het portaal.
 
@@ -40,40 +40,31 @@ toont. Opgehaalde dagen worden daarom in `data/agenda.json` bewaard en per datum
 samengevoegd, zodat de kalender lessen uit het verleden (en de absentie die
 daarbij hoort) blijft tonen.
 
-### Installeren als Home Assistant App
+### Installeren
 
-Op Home Assistant OS draai je dit als lokale App (voorheen: add-on).
+Deze repository is een Home Assistant app-repository, dus je hoeft niets met de
+hand te kopiëren.
 
-1. Kopieer deze map naar `/addons/eduarte-bridge/` op je HA-machine, bijvoorbeeld
-   via de Samba- of Advanced SSH-app. De map moet `config.yaml` en `Dockerfile`
-   in de wortel hebben.
-2. Ga naar **Instellingen → Apps → App-winkel**, klik rechtsboven op
-   **Controleer op updates** en herlaad de pagina. *Eduarte bridge* verschijnt
-   onder *Local add-ons*.
-3. Installeren. De eerste build duurt een paar minuten (Chromium wordt
-   meegeïnstalleerd).
-4. Vul op het tabblad **Configuratie** in:
+1. **Instellingen → Apps → App-winkel**, rechtsboven ⋮ → **Repositories**.
+2. Voeg toe: `https://github.com/rononline/eduarte-homeassistant`
+3. Sluit het venster en ververs de pagina. *Eduarte bridge* staat er nu tussen.
+4. Installeren. De eerste build duurt een paar minuten, want Chromium wordt
+   meegeïnstalleerd. Home Assistant bouwt het image zelf op je eigen machine.
+5. Vul het tabblad **Configuratie** in — zie
+   [de documentatie van de app](eduarte_bridge/DOCS.md) voor alle opties — en start.
 
-   | Optie | Toelichting |
-   |---|---|
-   | `portal_url` | De URL van het portaal, bijvoorbeeld `https://<school>.eduarte.nl` |
-   | `eduarte_email` | Het e-mailadres van het schoolaccount |
-   | `eduarte_password` | Het wachtwoord |
-   | `totp_secret` | Het TOTP-secret uit de QR-code van de 2FA-instelling; leeg als er geen 2FA is |
-   | `is_microsoft_login` | `true` bij Microsoft SSO, `false` bij een eigen Eduarte-login |
-   | `api_token` | Zelfgekozen geheim; verplicht als de poort buiten je netwerk bereikbaar is |
-   | `calendar_name` | Naam die in de kalender-feed staat |
-   | `placement_names` | Agenda-items met deze namen tellen als stage in plaats van les (standaard `BPV`, komma-gescheiden) |
-   | `refresh_interval` | Minuten tussen ophaalacties (standaard 30) |
-   | `history_days` | Hoeveel dagen verleden bewaard blijft (standaard 90); bepaalt ook hoe ver `absent_lessons` terugkijkt |
+Updates verschijnen daarna vanzelf in de app-winkel wanneer hier een nieuwe versie
+verschijnt.
 
-5. Starten en het logboek bekijken. Bij een geslaagde start staat er
-   `Agenda refreshed: N day(s), M lesson(s).`
+<details>
+<summary>Liever handmatig, zonder de repository toe te voegen</summary>
 
-Het TOTP-secret haal je uit de QR-code die Microsoft toont bij het instellen van
-de authenticator: scan hem met een QR-lezer en neem de waarde achter `secret=`
-over. Als het account al 2FA heeft, moet je dat opnieuw instellen om het secret
-te zien.
+Kopieer de map `eduarte_bridge/` naar `/addons/` op je Home Assistant-machine
+(bijvoorbeeld via de Samba-app), en klik in de app-winkel op **Controleer op
+updates**. De app verschijnt dan onder *Local add-ons*. Bij elke wijziging moet je
+de map opnieuw kopiëren.
+
+</details>
 
 ### Koppelen aan Home Assistant
 
@@ -109,6 +100,7 @@ Met `api_token` ingesteld moet elk verzoek (behalve `/health`) een
 ### Buiten Home Assistant draaien
 
 ```
+cd eduarte_bridge
 npm ci
 cp .env.dist .env      # invullen
 npm run build && npm start
@@ -119,6 +111,7 @@ npm run build && npm start
 Begin hiermee voordat je aan Home Assistant denkt:
 
 ```
+cd eduarte_bridge
 npm ci
 cp .env.dist .env      # portal_url, e-mail en wachtwoord invullen
 npm run probe
@@ -127,7 +120,7 @@ npm run probe
 De probe logt in, schrijft de ruwe agendapagina naar `data/agenda-page.html` en
 laat zien wat de parser eruit haalt. Krijg je een nette lijst met vakken, tijden
 en lokalen, dan werkt het. Zo niet, dan vertelt de opgeslagen HTML wat er anders
-is; de selectors staan bij elkaar in `src/api/eduarte-api.ts`.
+is; de selectors staan bij elkaar in `eduarte_bridge/src/api/eduarte-api.ts`.
 
 Twee verschillen die al bekend zijn en allebei ondersteund worden:
 
@@ -145,9 +138,11 @@ npm run probe          # logt in, slaat de agendapagina op en toont wat de parse
 npm run probe -- data/agenda-page.html    # opnieuw parsen zonder in te loggen
 ```
 
+Alle npm-commando's draaien vanuit `eduarte_bridge/`, waar de app woont.
+
 `npm run probe` is het gereedschap voor als het portaal verandert: het schrijft
 de ruwe HTML naar `data/agenda-page.html` zodat de selectors in
-`src/api/eduarte-api.ts` daarop aangepast kunnen worden.
+`eduarte_bridge/src/api/eduarte-api.ts` daarop aangepast kunnen worden.
 
 De tests draaien zonder netwerk of inloggegevens: ze voeren de parser uit op
 opgeslagen HTML-fragmenten. Voeg je ondersteuning voor een andere instantie toe,
@@ -183,6 +178,7 @@ Dat is `EBADEXEC`: macOS weigert de ongesigneerde Chrome die Puppeteer downloadt
 Draai de probe dan in de container, waar Chromium uit Alpine komt:
 
 ```
+cd eduarte_bridge
 docker build --platform linux/amd64 -t eduarte-bridge .
 docker run --rm --platform linux/amd64 --env-file .env \
   -e DATA_DIR=/data -e DISABLE_SANDBOX=true -v "$PWD/data:/data" \

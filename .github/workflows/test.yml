@@ -8,12 +8,16 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: eduarte_bridge
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: eduarte_bridge/package-lock.json
       # de tests raken geen browser en geen netwerk, dus de Chromium-download
       # van Puppeteer is hier niet nodig.
       - run: npm ci

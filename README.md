@@ -122,12 +122,21 @@ actions:
         {%- if n > 1 %} — {{ n }}e absentie vandaag{% endif %}
         {%- else %}Er is een absentie geregistreerd.{% endif %}
       data:
+        push:
+          sound: default
+          # komt ook door een focusstand heen; een absentie wil je niet
+          # uren later pas zien
+          interruption-level: time-sensitive
         notification_icon: mdi:account-alert
         notification_icon_color: "#FFFFFF"
         color: "#F57C00"
         group: eduarte
         url: /school-rooster/rooster
 ```
+
+De `push`-opties hierboven zijn iOS-specifiek. Op Android werken `color` en
+`notification_icon` wel, maar `interruption-level` niet; gebruik daar
+`channel` en `importance`.
 
 Twee dingen die niet vanzelfsprekend zijn:
 

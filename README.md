@@ -85,6 +85,62 @@ homeassistant:
   packages: !include_dir_named packages
 ```
 
+### Voorbeeld: melding bij een absentie
+
+Zodra school een les als absent registreert, een pushbericht met vak, tijd en
+docent erin. Maak hem aan via **Instellingen → Automatiseringen** → nieuwe
+automatisering → ⋮ → **Bewerken in YAML**:
+
+```yaml
+alias: "Eduarte: melding bij absentie"
+description: >-
+  Reageert op de teller in plaats van op binary_sensor.eduarte_absent_gemeld,
+  zodat een tweede absentie op dezelfde dag ook een bericht oplevert.
+mode: single
+
+triggers:
+  - trigger: state
+    entity_id: sensor.eduarte_absenties_vandaag
+    # zonder dit geeft elke herstart een valse melding, want dan springt
+    # de sensor van unavailable naar zijn waarde
+    not_from: ["unknown", "unavailable"]
+    not_to: ["unknown", "unavailable"]
+
+conditions:
+  # alleen bij een toename; de reset naar 0 om middernacht is ook een wijziging
+  - "{{ trigger.to_state.state | int(0) > trigger.from_state.state | int(0) }}"
+
+actions:
+  - action: notify.mobile_app_JOUW_TELEFOON
+    data:
+      title: Absent gemeld op school
+      message: >-
+        {% set l = state_attr("sensor.eduarte_absenties_vandaag","last_absence") %}
+        {% set n = states("sensor.eduarte_absenties_vandaag") | int(0) %}
+        {% if l %}{{ l.name }} van {{ l.start_time }} tot {{ l.end_time }}
+        {%- if l.teacher %} ({{ l.teacher }}){% endif %}
+        {%- if n > 1 %} — {{ n }}e absentie vandaag{% endif %}
+        {%- else %}Er is een absentie geregistreerd.{% endif %}
+      data:
+        notification_icon: mdi:account-alert
+        notification_icon_color: "#FFFFFF"
+        color: "#F57C00"
+        group: eduarte
+        url: /school-rooster/rooster
+```
+
+Twee dingen die niet vanzelfsprekend zijn:
+
+- **Waarom de teller en niet de binary sensor?** `binary_sensor.eduarte_absent_gemeld`
+  blijft de hele dag aan zodra er één absentie is. Bij een tweede gemiste les zou
+  je dan niets horen. De teller loopt op, dus je krijgt bericht per les.
+- **Waarom `not_from` / `not_to`?** Bij een herstart van de app of van Home
+  Assistant gaat de sensor van `unavailable` naar zijn waarde. Zonder deze
+  uitsluiting is dat een "toename" en krijg je een melding zonder aanleiding.
+
+De teller valt om middernacht vanzelf terug naar 0, dus de volgende dag begint
+weer schoon.
+
 ### Endpoints
 
 | Pad | Inhoud |

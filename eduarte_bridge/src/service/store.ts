@@ -5,6 +5,7 @@ import {EduarteAuth} from "../api/eduarte-auth";
 import {SchoolDay} from "../api/objects/schoolDay";
 import {Subject} from "../api/objects/subject";
 import {AgendaView} from "../api/objects/agendaView";
+import {AbsenceStatus} from "../api/objects/absenceStatus";
 import {toDateKey} from "../api/utils";
 import {Config} from "../config";
 import {classifyDays} from "./classify";
@@ -205,8 +206,42 @@ export class AgendaStore {
                 this.log(`Day ${day.dateKey} came back empty; keeping ${existing.subjects.length} known lesson(s).`);
                 continue;
             }
-            this.days.set(day.dateKey, day);
+
+            this.days.set(day.dateKey, existing ? this.keepRegistrations(existing, day) : day);
         }
+    }
+
+    /**
+     * Carries a recorded presence over a re-read that reports nothing.
+     *
+     * Re-reading past weeks means a parser that has stopped recognising the
+     * presence column would quietly erase every registration it walks over —
+     * which is exactly what happened once. A school does not un-register an
+     * absence, so "nothing registered" on a lesson we already had a verdict for
+     * means the read failed, not that the verdict changed. A different verdict
+     * (present becoming absent, or the other way round) is a real correction and
+     * is accepted.
+     */
+    private keepRegistrations(existing: SchoolDay, fresh: SchoolDay): SchoolDay {
+        const known = new Map(existing.subjects.map(subject => [subject.id, subject]));
+
+        return {
+            ...fresh,
+            subjects: fresh.subjects.map(subject => {
+                const before = known.get(subject.id);
+                const wasRegistered = before && before.absenceStatus !== AbsenceStatus.NOT_REGISTERED;
+
+                if (!wasRegistered || subject.absenceStatus !== AbsenceStatus.NOT_REGISTERED) {
+                    return subject;
+                }
+
+                this.log(
+                    `Kept ${before!.absenceStatus} for ${subject.id};`
+                    + " the re-read reported no registration."
+                );
+                return {...subject, absenceStatus: before!.absenceStatus, absenceMarker: before!.absenceMarker};
+            }),
+        };
     }
 
     private prune() {

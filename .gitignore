@@ -4,4 +4,4 @@ dist
 data
 .env
 .idea
-.vscode
+.vscode.DS_Store

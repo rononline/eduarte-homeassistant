@@ -222,3 +222,38 @@ test("ignores negative or fractional input", () => {
     assert.deepEqual(weekOffsets(3, -5), [0, 1, 2]);
     assert.deepEqual(weekOffsets(2.7, 1.2), [-1, 0, 1]);
 });
+
+// Vanaf oktober 2026 zet het portaal een SVG-sprite in de presentiekolom en zit
+// de uitspraak in de kleurklasse. De font-icoon-vorm van daarvoor moet blijven
+// werken, want een school op een oudere release levert die nog.
+test("reads the SVG sprite marker the portal switched to", () => {
+    const aanwezig = rowWithPresence(
+        '<svg class="svg-sprites color-icon-success color-icon-success-hover">'
+        + '<use href="/assets/svg/icon-calendar.svg#calendar"></use></svg>'
+    );
+    const les = parseAgenda(aanwezig, reference)[0].subjects[0];
+    assert.equal(les.absenceStatus, AbsenceStatus.PRESENT);
+    assert.equal(les.absenceMarker, "svg-sprites color-icon-success color-icon-success-hover");
+});
+
+test("reads an absence from the SVG colour class", () => {
+    const absent = rowWithPresence(
+        '<svg class="svg-sprites color-icon-danger color-icon-danger-hover">'
+        + '<use href="/assets/svg/icon-calendar.svg#calendar"></use></svg>'
+    );
+    assert.equal(parseAgenda(absent, reference)[0].subjects[0].absenceStatus, AbsenceStatus.ABSENT);
+});
+
+test("an unknown SVG colour counts as not attended", () => {
+    // bijvoorbeeld een 'te laat'-variant: liever ten onrechte gemeld dan gemist.
+    const les = parseAgenda(rowWithPresence('<svg class="svg-sprites color-icon-warning"></svg>'), reference)[0].subjects[0];
+    assert.equal(les.absenceStatus, AbsenceStatus.ABSENT);
+    assert.equal(les.absenceMarker, "svg-sprites color-icon-warning");
+});
+
+test("the old font-icon layout keeps working", () => {
+    const oud = rowWithPresence('<i class=" flaticon calendar-2 is-completed"></i>');
+    assert.equal(parseAgenda(oud, reference)[0].subjects[0].absenceStatus, AbsenceStatus.PRESENT);
+    const absent = rowWithPresence('<i class=" icon-absent-1"></i>');
+    assert.equal(parseAgenda(absent, reference)[0].subjects[0].absenceStatus, AbsenceStatus.ABSENT);
+});

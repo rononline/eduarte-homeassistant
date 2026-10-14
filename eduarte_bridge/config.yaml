@@ -1,5 +1,5 @@
 name: Eduarte bridge
-version: "2.5.0"
+version: "2.6.0"
 slug: eduarte_bridge
 description: Zet het Eduarte-rooster om in een iCalendar-feed en een JSON-status voor Home Assistant.
 url: https://github.com/rononline/eduarte-homeassistant

@@ -150,29 +150,38 @@ function parseAgenda(page: string, reference: Date = new Date()): SchoolDay[] {
 /**
  * Reads the presence registration from its own cell.
  *
- * The portal leaves `.agenda-presence-icon` empty until something is registered,
- * and drops in an icon once it is — `is-completed` for present. Rather than
- * matching one known class for absent, anything else registered counts as not
- * present: missing a real absence is the failure that matters here, and the raw
- * class is kept so an unexpected marker is visible instead of silent.
+ * The portal has used two shapes for the marker. It started with a font icon
+ * (`<i class="flaticon calendar-2 is-completed">`) and switched to an SVG sprite
+ * in October 2026, where the verdict lives in the colour class:
+ * `color-icon-success` for present, `color-icon-danger` for absent. Both are read
+ * here, because a school on an older release still serves the first.
+ *
+ * Only "success" counts as attended; anything else that is registered counts as
+ * not attended. Missing a real absence is the failure that matters, and the raw
+ * class is kept in `absenceMarker` so an unknown variant stays visible rather
+ * than silently becoming a clean attendance.
  */
 function readPresence(row: HTMLElement): {absenceStatus: AbsenceStatus; absenceMarker?: string} {
     const cell = row.querySelector(".agenda-presence-icon");
-    // older layouts put the icon loose in the row instead of in its own cell.
-    const scope = cell ?? row;
-    const icon = scope.querySelector("i, span[class*=icon], span[class*=is-]");
+
+    // Without the dedicated cell this is an older layout that puts the icon
+    // loose in the row; there, match only the classes that layout used — any
+    // icon would otherwise pick up the homework marker.
+    const icon = cell
+        ? cell.querySelector("svg, i, span[class], div[class]")
+        : row.querySelector(".is-completed, .icon-absent-1");
 
     if (!icon) {
         return {absenceStatus: AbsenceStatus.NOT_REGISTERED};
     }
 
     const marker = icon.getAttribute("class")?.trim().replace(/\s+/g, " ");
+    const attended = /\b(is-completed|color-icon-success)\b/.test(marker ?? "");
 
-    if (icon.classList.contains("is-completed")) {
-        return {absenceStatus: AbsenceStatus.PRESENT, absenceMarker: marker};
-    }
-
-    return {absenceStatus: AbsenceStatus.ABSENT, absenceMarker: marker};
+    return {
+        absenceStatus: attended ? AbsenceStatus.PRESENT : AbsenceStatus.ABSENT,
+        absenceMarker: marker,
+    };
 }
 
 function applyTime(date: Date, timeString: string): Date | undefined {

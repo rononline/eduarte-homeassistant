@@ -226,7 +226,10 @@ neem dan een fragment van die pagina op als test.
   zelf goed, maar als het portaal die knop verplaatst, faalt het parsen met
   `Agenda element has not been found`.
 - Absentie komt uit de kolom `.agenda-presence-icon`. Leeg betekent niets
-  geregistreerd; `is-completed` betekent aanwezig; elk ander icoon wordt als
+  geregistreerd. Het portaal heeft twee vormen gebruikt en beide worden gelezen:
+  een font-icoon (`is-completed` = aanwezig) en, sinds oktober 2026, een
+  SVG-sprite waarbij de kleurklasse de uitspraak is (`color-icon-success` =
+  aanwezig, `color-icon-danger` = absent). Elke andere markering wordt als
   niet-aanwezig geteld. Die laatste regel is bewust ruim: een gemiste absentie is
   erger dan een verkeerd gelabelde. De ruwe klasse staat in `absence_marker`, dus
   een onbekend icoon is zichtbaar in plaats van stil. Een aparte

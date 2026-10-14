@@ -218,12 +218,14 @@ instantie toe, neem dan een pagina van die instantie zo op.
 ### Bekende beperkingen
 
 - Het portaal toont per keer één week. De bridge loopt daarom bij elke ophaalronde
-  `weeks_back` weken terug en `weeks_ahead` weken vooruit (standaard 2 en 4) door
+  `weeks_back` weken terug en `weeks_ahead` weken vooruit (standaard 3 en 4) door
   het datumfilter te bedienen, en voegt de resultaten samen per datum.
 - Het terugkijken is er omdat een school de presentie soms pas dagen na de les
   invult. Binnen de lopende week is dat geen probleem — het portaal toont de hele
   week — maar zonder `weeks_back` zou de bridge een week na afloop nooit meer kijken
-  en zo'n late registratie voorgoed missen.
+  en zo'n late registratie voorgoed missen. Het venster is tegelijk je marge voor
+  een stille leesfout: verandert het portaal zijn opmaak, dan haalt de bridge na
+  een fix alsnog op wat er binnen die weken valt.
 - De agenda moet in de lijstweergave staan. De service zet die na elke login
   zelf goed, maar als het portaal die knop verplaatst, faalt het parsen met
   `Agenda element has not been found`.

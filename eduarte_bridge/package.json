@@ -1,6 +1,6 @@
 {
     "name": "eduarte-ha-bridge",
-    "version": "2.6.0",
+    "version": "2.6.1",
     "description": "Bridge that exposes an Eduarte student portal agenda to Home Assistant as an iCalendar feed and a JSON state endpoint.",
     "main": "dist/index.js",
     "scripts": {

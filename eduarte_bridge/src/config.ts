@@ -98,7 +98,7 @@ export function loadConfig(): Config {
         dataDir: raw("DATA_DIR") || "./data",
         historyDays: number("HISTORY_DAYS", 90),
         weeksAhead: number("WEEKS_AHEAD", 4),
-        weeksBack: number("WEEKS_BACK", 2),
+        weeksBack: number("WEEKS_BACK", 3),
         calendarName: raw("CALENDAR_NAME") || "Rooster",
         placementNames: (raw("PLACEMENT_NAMES") ?? "BPV")
             .split(",")

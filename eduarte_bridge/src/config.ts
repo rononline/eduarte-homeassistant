@@ -72,6 +72,8 @@ export interface Config {
     historyDays: number;
     /** How many weeks to walk forward through the agenda on each refresh. */
     weeksAhead: number;
+    /** How many past weeks to re-read, for registrations the school enters late. */
+    weeksBack: number;
     calendarName: string;
     /** Agenda entries with these names count as a work placement, not a lesson. */
     placementNames: string[];
@@ -96,6 +98,7 @@ export function loadConfig(): Config {
         dataDir: raw("DATA_DIR") || "./data",
         historyDays: number("HISTORY_DAYS", 90),
         weeksAhead: number("WEEKS_AHEAD", 4),
+        weeksBack: number("WEEKS_BACK", 2),
         calendarName: raw("CALENDAR_NAME") || "Rooster",
         placementNames: (raw("PLACEMENT_NAMES") ?? "BPV")
             .split(",")

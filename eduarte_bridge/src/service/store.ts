@@ -125,19 +125,19 @@ export class AgendaStore {
             let navigated: boolean;
 
             try {
-                ({days: agenda, navigated} = await api.getAgendaWeeks(this.config.weeksAhead));
+                ({days: agenda, navigated} = await api.getAgendaWeeks({ahead: this.config.weeksAhead, back: this.config.weeksBack}));
             } catch (first) {
                 // a stale session yields a login page instead of the agenda; retry once
                 // with fresh cookies before giving up.
                 this.log(`First agenda attempt failed (${first}), re-authenticating.`);
                 await this.authenticate();
-                ({days: agenda, navigated} = await (await this.getApi()).getAgendaWeeks(this.config.weeksAhead));
+                ({days: agenda, navigated} = await (await this.getApi()).getAgendaWeeks({ahead: this.config.weeksAhead, back: this.config.weeksBack}));
             }
 
-            if (!navigated && this.config.weeksAhead > 1) {
+            if (!navigated && (this.config.weeksAhead > 1 || this.config.weeksBack > 0)) {
                 console.warn(
                     "The portal ignored the date filter, so only the current week was read."
-                    + " Set weeks_ahead to 1 to silence this."
+                    + " Set weeks_ahead to 1 and weeks_back to 0 to silence this."
                 );
             }
 

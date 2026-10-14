@@ -17,6 +17,7 @@ studentenportaal en biedt die aan Home Assistant aan.
 | `placement_names` | Agenda-items met deze namen tellen als stage in plaats van les (standaard `BPV`) |
 | `refresh_interval` | Minuten tussen ophaalacties (standaard 30) |
 | `weeks_ahead` | Hoeveel weken vooruit het rooster wordt opgehaald (standaard 4) |
+| `weeks_back` | Hoeveel weken terug opnieuw worden opgehaald (standaard 2). Nodig omdat een school de presentie soms pas dagen later invult; zonder dit mist de bridge zo'n late registratie voorgoed |
 | `history_days` | Hoeveel dagen verleden bewaard blijft (standaard 90) |
 
 Na het starten hoort er in het logboek te staan:

@@ -19,6 +19,24 @@ function findAjaxUrl(page: string, component: string): string | undefined {
     return pattern.exec(page)?.[1];
 }
 
+/**
+ * The week offsets to walk, from the oldest to the furthest ahead.
+ *
+ * `back` exists because a school can register attendance days after the lesson.
+ * Within the current week that is harmless — the portal shows the whole week, so
+ * a later refresh picks it up — but once the week has rolled over the bridge
+ * would never look again and the registration would be missed for good.
+ */
+function weekOffsets(ahead: number, back: number): number[] {
+    // guard the sign explicitly: -Math.max(0, 0) is -0, which compares unequal
+    // to 0 in a deep comparison and reads as a mistake wherever it surfaces.
+    const first = back > 0 ? -Math.trunc(back) : 0;
+    const last = Math.max(1, Math.trunc(ahead)) - 1;
+    const offsets: number[] = [];
+    for (let week = first; week <= last; week++) offsets.push(week);
+    return offsets;
+}
+
 /** Trims a scraped value and turns blank ones into undefined. */
 function clean(value: string | undefined): string | undefined {
     const trimmed = value?.trim();
@@ -239,7 +257,9 @@ class EduarteAPI {
      * number changes as the page updates. If a step returns the same days as the
      * one before it the filter stopped taking effect, so it stops there.
      */
-    async getAgendaWeeks(weeks: number, from: Date = new Date()): Promise<{days: SchoolDay[]; navigated: boolean}> {
+    async getAgendaWeeks(
+        {ahead, back = 0, from = new Date()}: {ahead: number; back?: number; from?: Date}
+    ): Promise<{days: SchoolDay[]; navigated: boolean}> {
         const visitId = await this.getVisitId();
         const url = `${this.portalUrl}/agenda?${visitId}`;
 
@@ -255,7 +275,7 @@ class EduarteAPI {
         let previousKeys = "";
         let navigated = true;
 
-        for (let week = 0; week < Math.max(1, weeks); week++) {
+        for (const [step, week] of weekOffsets(ahead, back).entries()) {
             const target = new Date(from);
             target.setDate(target.getDate() + week * 7);
 
@@ -271,7 +291,7 @@ class EduarteAPI {
             const days = parseAgenda(page, target);
             const keys = days.map(day => day.dateKey).join(",");
 
-            if (week > 0 && keys === previousKeys) {
+            if (step > 0 && keys === previousKeys) {
                 navigated = false;
                 break;
             }
@@ -411,4 +431,4 @@ class EduarteAPI {
     }
 }
 
-export {EduarteAPI, SchoolDay, Subject, parseAgenda, findAjaxUrl};
+export {EduarteAPI, SchoolDay, Subject, parseAgenda, findAjaxUrl, weekOffsets};

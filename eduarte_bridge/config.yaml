@@ -1,5 +1,5 @@
 name: Eduarte bridge
-version: "2.4.0"
+version: "2.5.0"
 slug: eduarte_bridge
 description: Zet het Eduarte-rooster om in een iCalendar-feed en een JSON-status voor Home Assistant.
 url: https://github.com/rononline/eduarte-homeassistant
@@ -27,6 +27,7 @@ options:
   retry_interval: 5
   history_days: 90
   weeks_ahead: 4
+  weeks_back: 2
   debug: false
 schema:
   portal_url: url
@@ -41,4 +42,5 @@ schema:
   retry_interval: int(1,120)
   history_days: int(0,730)
   weeks_ahead: int(1,26)
+  weeks_back: int(0,26)
   debug: bool

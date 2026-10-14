@@ -1,6 +1,6 @@
 import {strict as assert} from "assert";
 import {test} from "node:test";
-import {findAjaxUrl, parseAgenda} from "./eduarte-api";
+import {findAjaxUrl, parseAgenda, weekOffsets} from "./eduarte-api";
 import {AbsenceStatus} from "./objects/absenceStatus";
 
 const page = `
@@ -200,4 +200,25 @@ test("an icon elsewhere in the row does not count as presence", () => {
         '<td class="agenda-homework-icon"><i class="flaticon book"></i></td><td class="agenda-homework"></td>'
     );
     assert.equal(parseAgenda(page, reference)[0].subjects[0].absenceStatus, AbsenceStatus.NOT_REGISTERED);
+});
+
+test("walks back as well as forward, oldest week first", () => {
+    assert.deepEqual(weekOffsets(4, 2), [-2, -1, 0, 1, 2, 3]);
+});
+
+test("with no look-back it starts at the current week", () => {
+    assert.deepEqual(weekOffsets(4, 0), [0, 1, 2, 3]);
+});
+
+test("always walks at least the current week", () => {
+    // a school that registers late is the reason back exists; ahead below 1
+    // must still read today, otherwise a refresh does nothing at all.
+    assert.deepEqual(weekOffsets(0, 0), [0]);
+    assert.deepEqual(weekOffsets(1, 0), [0]);
+    assert.deepEqual(weekOffsets(0, 1), [-1, 0]);
+});
+
+test("ignores negative or fractional input", () => {
+    assert.deepEqual(weekOffsets(3, -5), [0, 1, 2]);
+    assert.deepEqual(weekOffsets(2.7, 1.2), [-1, 0, 1]);
 });

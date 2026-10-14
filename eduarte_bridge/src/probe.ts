@@ -30,9 +30,9 @@ import {AgendaView} from "./api/objects/agendaView";
         const api = new EduarteAPI(config.portalUrl, cookie);
         await api.setAgendaView(AgendaView.LIST);
 
-        const walk = await api.getAgendaWeeks(config.weeksAhead);
+        const walk = await api.getAgendaWeeks({ahead: config.weeksAhead, back: config.weeksBack});
         console.log(
-            `Walked ${config.weeksAhead} week(s): ${walk.days.length} day(s)`
+            `Walked ${config.weeksBack} week(s) back and ${config.weeksAhead} ahead: ${walk.days.length} day(s)`
             + `${walk.navigated ? "" : " — the date filter did NOT take effect"}.`
         );
         for (const day of walk.days) {

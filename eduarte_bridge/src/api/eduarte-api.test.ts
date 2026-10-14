@@ -1,5 +1,7 @@
 import {strict as assert} from "assert";
 import {test} from "node:test";
+import {readFileSync} from "fs";
+import {join} from "path";
 import {findAjaxUrl, parseAgenda, weekOffsets} from "./eduarte-api";
 import {AbsenceStatus} from "./objects/absenceStatus";
 
@@ -256,4 +258,78 @@ test("the old font-icon layout keeps working", () => {
     assert.equal(parseAgenda(oud, reference)[0].subjects[0].absenceStatus, AbsenceStatus.PRESENT);
     const absent = rowWithPresence('<i class=" icon-absent-1"></i>');
     assert.equal(parseAgenda(absent, reference)[0].subjects[0].absenceStatus, AbsenceStatus.ABSENT);
+});
+
+// Een echte agendapagina van het portaal, met de vak-, docent- en lokaalnamen,
+// de interne afspraak-ids en de datums vervangen. Een zelfgebouwde rij bewijst
+// alleen wat je er zelf in zet; dit bestand legt vast wat het portaal in
+// oktober 2026 werkelijk leverde: de kolomvolgorde, een tabel per dag, en de
+// SVG-markering die de absentie wekenlang stil heeft gebroken. Opnieuw te maken
+// met `npm run probe`, die de ruwe HTML wegschrijft.
+const fixture = readFileSync(join(__dirname, "../../src/api/fixtures/agenda-week.html"), "utf8");
+const fixtureReference = new Date(2026, 2, 4);
+
+test("parses a real portal week end to end", () => {
+    const days = parseAgenda(fixture, fixtureReference);
+
+    assert.deepEqual(
+        days.map(day => [day.dateKey, day.subjects.length]),
+        [
+            ["2026-03-02", 1],
+            ["2026-03-03", 1],
+            ["2026-03-04", 5],
+            ["2026-03-05", 1],
+            ["2026-03-06", 1],
+        ],
+        "five days, with the school day in the middle and stage around it"
+    );
+});
+
+test("reads every field of a real lesson row", () => {
+    const lesson = parseAgenda(fixture, fixtureReference)[2].subjects[2];
+
+    assert.equal(lesson.name, "Nederlands 2F");
+    assert.equal(lesson.teacher, "coradi");
+    assert.equal(lesson.location, "A101");
+    assert.equal(lesson.lessonHours, "3-4");
+    assert.equal(lesson.startTimeString, "10:15");
+    assert.equal(lesson.endTimeString, "11:45");
+    assert.equal(lesson.id, "2026-03-04-1015-nederlands-2f");
+});
+
+test("reads the whole week's presence out of the real markup", () => {
+    const statuses = parseAgenda(fixture, fixtureReference).flatMap(day =>
+        day.subjects.map(subject => subject.absenceStatus)
+    );
+    const count = (status: AbsenceStatus) => statuses.filter(each => each === status).length;
+
+    assert.equal(count(AbsenceStatus.PRESENT), 3);
+    assert.equal(count(AbsenceStatus.ABSENT), 2);
+    // de stagedagen eromheen registreert de school niet.
+    assert.equal(count(AbsenceStatus.NOT_REGISTERED), 4);
+});
+
+test("a real stage row leaves teacher and location empty", () => {
+    // BPV komt zonder docent en zonder lokaal; dat mag geen lege string worden,
+    // want de kalender en de meldingen hangen die velden alleen op als ze er zijn.
+    const placement = parseAgenda(fixture, fixtureReference)[0].subjects[0];
+
+    assert.equal(placement.name, "BPV");
+    assert.equal(placement.teacher, undefined);
+    assert.equal(placement.location, undefined);
+});
+
+test("a row without lesson hours still parses", () => {
+    // het mentoruur komt met een lege <div> in de lesuren-kolom.
+    assert.equal(parseAgenda(fixture, fixtureReference)[2].subjects[3].lessonHours, undefined);
+});
+
+test("finds the week filter in the real page", () => {
+    // de twee endpoints die het weeklopen gebruikt; die moeten uit de pagina
+    // komen, want het versienummer erin schuift mee met elke her-render.
+    assert.equal(findAjaxUrl(fixture, "filter-datum"), "4-1.0-filter-datum");
+    assert.equal(
+        findAjaxUrl(fixture, "filter-weergaveKiezer-choicesContainer-enumHiddenField"),
+        "4-1.0-filter-weergaveKiezer-choicesContainer-enumHiddenField"
+    );
 });

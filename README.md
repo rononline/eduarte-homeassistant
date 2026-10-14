@@ -210,8 +210,10 @@ de ruwe HTML naar `data/agenda-page.html` zodat de selectors in
 `eduarte_bridge/src/api/eduarte-api.ts` daarop aangepast kunnen worden.
 
 De tests draaien zonder netwerk of inloggegevens: ze voeren de parser uit op
-opgeslagen HTML-fragmenten. Voeg je ondersteuning voor een andere instantie toe,
-neem dan een fragment van die pagina op als test.
+opgeslagen HTML. Naast losse fragmenten staat er een hele weekpagina in
+`eduarte_bridge/src/api/fixtures/agenda-week.html`, met de namen, lokalen en
+datums vervangen door verzonnen waarden. Voeg je ondersteuning voor een andere
+instantie toe, neem dan een pagina van die instantie zo op.
 
 ### Bekende beperkingen
 

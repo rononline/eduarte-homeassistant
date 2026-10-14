@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html>
+<head><script type="text/javascript" src="./wicket/resource/org.apache.wicket.resource.JQueryResourceReference/jquery/jquery-3.7.1-ver-962A4A135B116C30221466C5E4F0E7A1.js"></script>
+<script type="text/javascript" src="./wicket/resource/nl.topicus.eduario.web.components.panel.EduArioFeedbackPanel/eduariofeedbackpanel-ver-AAC06FF60F955F9126AE1B506BCF595F.js"></script>
+<script type="text/javascript" src="./wicket/resource/org.apache.wicket.ajax.AbstractDefaultAjaxBehavior/res/js/wicket-ajax-jquery-ver-EF5CE716023AC851E8B721946431BE44.js"></script>
+<script type="text/javascript" src="./wicket/resource/nl.topicus.eduario.web.behaviors.EduArioUIResourceReference/EduArioUI-ver-ECD332962F4363B84DB23430D2667F9F.js"></script>
+<script type="text/javascript" src="./wicket/resource/nl.topicus.cobra.web.components.choice.AbstractAjaxDropDownChoice/dropdownchoice-ver-5DFF8E22A13DF1920D54D457D057A92B.js"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="agenda";
+/*]]>*/
+</script>
+<script type="text/javascript" src="./wicket/resource/nl.topicus.eduario.web.components.panel.SidebarPanel/slidebar-ver-3C07F3A2BD92EAA1724DD316EEBD8C0C.js"></script>
+<script type="text/javascript" src="./wicket/resource/org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference/jquery-ui-ver-315B93FA02B4E38E4A76CDF2C3A0B7ED.js"></script>
+<script type="text/javascript" src="./wicket/resource/org.wicketstuff.wiquery.ui.datepicker.DatePickerLanguageResourceReference/i18n/datepicker-nl-ver-A539638D2B838BABE9E56A25B233C179.js"></script>
+<script type="text/javascript" src="./wicket/resource/nl.topicus.eduario.web.components.form.EnumEditPanel/EnumEditPanel-ver-76F35FBD7B2618BDE568EF280CCA9E93.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="apple-mobile-web-app-title" content="Eduarte Portalen" />
+<link rel="apple-touch-icon" sizes="180x180"
+	href="/assets/img/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32"
+	href="/assets/img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16"
+	href="/assets/img/favicon-16x16.png">
+<link rel="manifest" href="/assets/img/site.webmanifest">
+<link rel="mask-icon" href="/assets/img/safari-pinned-tab.svg"
+	color="#5bbad5">
+<link rel="shortcut icon" href="/assets/img/favicon.ico">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-config"
+	content="/assets/img/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="Eduarte Portalen" />
+<meta name="author" content="Topicus Onderwijs Eduarte B.V." />
+<title>Agenda - Eduarte Portalen</title>
+<!-- Page class: class nl.topicus.eduario.web.pages.agenda.AgendaPage -->
+<link rel="stylesheet" type="text/css" href="./wicket/resource/assets.AssetsResourceReferenceMarker/stylesheets/styles-ver-94DA208E4C34ABC9F532D3381D5B4C30.css" />
+<script type="text/javascript" src="./wicket/resource/nl.topicus.eduario.web.pages.AbstractEduArioPage/jquery.viewport.mini-ver-318ED33BBDEE2EF7181386682CDF6E63.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+Wicket.Event.add(window, "domready", function(event) { 
+$('#id76').eduArioFeedback();;
+$('#id77').menuToggle();;
+$('#id78').menuToggle();;
+$('#id79').dropDownChoice({autoselect: false, ajax: function () {
+var attrs = {"u":"./agenda?4-1.1-sidebar-sidebarContent-0-content-form-fieldset-fieldSetMarkup-inputFields-0-controlGroup-controlGroup_body-formField&op=4","m":"POST","c":"id79","dep":[function(attrs){return Wicket.Form.serializeElement('id79')}]};
+var params = [];
+attrs.ep = params.concat(attrs.ep || []);
+Wicket.Ajax.ajax(attrs);
+}
+});;
+Wicket.Event.add('id79', 'keypress', function(event) { if ((window.event && window.event.keyCode==13)||event.which==13){jQuery('#id7a').click();};});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.1-sidebar-sidebarContent-0-content-form-fieldset-fieldSetMarkup-inputFields-0-controlGroup-controlGroup_body-formField&op=4","m":"POST","c":"id79","dep":[function(attrs){return Wicket.Form.serializeElement('id79')}],"e":"change"});;
+$('#id7b').dropDownChoice({autoselect: false, ajax: function () {
+var attrs = {"u":"./agenda?4-1.1-sidebar-sidebarContent-0-content-form-fieldset-fieldSetMarkup-inputFields-1-controlGroup-controlGroup_body-formField&op=4","m":"POST","c":"id7b","dep":[function(attrs){return Wicket.Form.serializeElement('id7b')}]};
+var params = [];
+attrs.ep = params.concat(attrs.ep || []);
+Wicket.Ajax.ajax(attrs);
+}
+});;
+Wicket.Event.add('id7b', 'keypress', function(event) { if ((window.event && window.event.keyCode==13)||event.which==13){jQuery('#id7a').click();};});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.1-sidebar-sidebarContent-0-content-form-fieldset-fieldSetMarkup-inputFields-1-controlGroup-controlGroup_body-formField&op=4","m":"POST","c":"id7b","dep":[function(attrs){return Wicket.Form.serializeElement('id7b')}],"e":"change"});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.0-sidebar-sidebarContent-0-content-form-zoeken&op=4","m":"POST","c":"id7a","f":"id7c","sc":"zoeken","e":"click","pd":true});;
+Wicket.Event.add('id7c', 'keypress', function(event) { if (event.target.tagName.toLowerCase() !== 'input' || event.which != 13) return;var b = document.getElementById('id7a');if (window.getComputedStyle(b).visibility === 'hidden') return;event.stopPropagation();event.preventDefault();if (b != null && b.onclick != null && typeof (b.onclick) != 'undefined') {var r = Wicket.bind(b.onclick, b)();if (r != false) b.click();} else {b.click();}return false;;});;
+$('#id7d').datepicker({onClose: function(dateText, inst) {
+	$(this).blur();
+}, dateFormat: 'dd-mm-yy'});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.0-filter-datum&op=4","m":"POST","c":"id7d","e":"change"});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.0-filter-weergaveKiezer-choicesContainer-enumHiddenField&op=4","m":"POST","c":"id7e","e":"change"});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.0-filter-lesuren&op=4","m":"POST","c":"id7f","e":"click"});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.0-agenda-dagen-1-afspraken-0&op=4","c":"id80","e":"click"});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.0-agenda-dagen-2-afspraken-0&op=4","c":"id81","e":"click"});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.0-agenda-dagen-3-afspraken-0&op=4","c":"id82","e":"click"});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.0-agenda-dagen-3-afspraken-1&op=4","c":"id83","e":"click"});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.0-agenda-dagen-3-afspraken-2&op=4","c":"id84","e":"click"});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.0-agenda-dagen-3-afspraken-3&op=4","c":"id85","e":"click"});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.0-agenda-dagen-3-afspraken-4&op=4","c":"id86","e":"click"});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.0-agenda-dagen-4-afspraken-0&op=4","c":"id87","e":"click"});;
+Wicket.Ajax.ajax({"u":"./agenda?4-1.0-agenda-dagen-5-afspraken-0&op=4","c":"id88","e":"click"});;
+$('html,body').animate({ scrollTop: $('#10000000001').offset().top-100}, 1000); ;
+(function() {
+	if (document._doubleSubmitGuardInstalled) return;
+	document._doubleSubmitGuardInstalled = true;
+	document.addEventListener('submit', function(e) {
+		var form = e.target;
+		if (form._submitGuard) {
+			e.preventDefault();
+			e.stopImmediatePropagation();
+			return;
+		}
+		form._submitGuard = true;
+		setTimeout(function() { form._submitGuard = false; }, 1000);
+	}, true);
+	window.addEventListener('pageshow', function(e) {
+		if (e.persisted) {
+			document.querySelectorAll('form').forEach(function(f) {
+				f._submitGuard = false;
+			});
+		}
+	});
+})();
+;
+Wicket.Event.publish(Wicket.Event.Topic.AJAX_HANDLERS_BOUND);
+;});
+/*]]>*/
+</script>
+</head>
+<body>
+	<div class="l-container">
+		<nav class="navigation navigation--student">
+	<div class="navigation-header">
+		<div class="navigation-header--logo">
+			<a>
+				<img src="./wicket/resource/assets.AssetsResourceReferenceMarker/img/logo-eduarte-new-ver-35D27CA20C57D7EA3BC4273316810E57.svg" alt="EduArtelogo"/>
+				<div class="navigation-header--title">Studentenportaal</div>
+			</a>
+		</div>
+		<div class="omgevingIndicator productieomgeving"></div>
+		<div class="navigation-header--close-navigation js-navigation" id="id77">
+			<svg class="svg-sprites">
+				<use href="/assets/svg/icon-cross.svg#cross"></use>
+			</svg>
+		</div>
+	</div>
+	<div class="navigation-items">
+		<ul class="navigation-items--main">
+			
+	<li>
+		
+	<a href="." class="d-flex align-items-center gap-2" title="Home">
+		<svg class="svg-sprites nav-icon--default">
+			<use href="/assets/svg/icon-home.svg#home"></use>
+		</svg>
+		<svg class="svg-sprites nav-icon--solid">
+			<use href="/assets/svg/icon-home-solid.svg#home-solid"></use>
+		</svg>
+		Home
+	</a>
+	
+
+	</li><li class="is-selected">
+		
+	<a href="./agenda" class="d-flex align-items-center gap-2" title="Agenda">
+		<svg class="svg-sprites nav-icon--default">
+			<use href="/assets/svg/icon-calendar.svg#calendar"></use>
+		</svg>
+		<svg class="svg-sprites nav-icon--solid">
+			<use href="/assets/svg/icon-calendar-solid.svg#calendar-solid"></use>
+		</svg>
+		Agenda
+	</a>
+	
+
+	</li><li>
+		
+	<a href="./presentie/presentie.overzicht" class="d-flex align-items-center gap-2" title="Presentie">
+		<svg class="svg-sprites nav-icon--default">
+			<use href="/assets/svg/icon-calendar-check.svg#calendar-check"></use>
+		</svg>
+		<svg class="svg-sprites nav-icon--solid">
+			<use href="/assets/svg/icon-calendar-check-solid.svg#calendar-check-solid"></use>
+		</svg>
+		Presentie
+	</a>
+	
+
+	</li><li>
+		
+	<a href="./stage" class="d-flex align-items-center gap-2" title="Stage">
+		<svg class="svg-sprites nav-icon--default">
+			<use href="/assets/svg/icon-suitcase.svg#suitcase"></use>
+		</svg>
+		<svg class="svg-sprites nav-icon--solid">
+			<use href="/assets/svg/icon-suitcase-solid.svg#suitcase-solid"></use>
+		</svg>
+		Stage
+	</a>
+	
+
+	</li><li>
+		
+	<a href="./studie/opleiding" class="d-flex align-items-center gap-2" title="Studie">
+		<svg class="svg-sprites nav-icon--default">
+			<use href="/assets/svg/icon-graduation.svg#graduation"></use>
+		</svg>
+		<svg class="svg-sprites nav-icon--solid">
+			<use href="/assets/svg/icon-graduation-solid.svg#graduation-solid"></use>
+		</svg>
+		Studie
+	</a>
+	
+
+	</li><li>
+		
+	
+	
+
+	</li><li>
+		
+	
+	
+
+	</li><li>
+		
+	<a href="./werklijst" class="d-flex align-items-center gap-2" title="Werklijst">
+		<svg class="svg-sprites nav-icon--default">
+			<use href="/assets/svg/icon-list.svg#list"></use>
+		</svg>
+		<svg class="svg-sprites nav-icon--solid">
+			<use href="/assets/svg/icon-list-solid.svg#list-solid"></use>
+		</svg>
+		Werklijst
+	</a>
+	
+
+	</li><li>
+		
+	
+	
+
+	</li><li>
+		
+	<a href="./resultaten" class="d-flex align-items-center gap-2" title="Resultaten">
+		<svg class="svg-sprites nav-icon--default">
+			<use href="/assets/svg/icon-bar-graph.svg#bar-graph"></use>
+		</svg>
+		<svg class="svg-sprites nav-icon--solid">
+			<use href="/assets/svg/icon-bar-graph-solid.svg#bar-graph-solid"></use>
+		</svg>
+		Resultaten
+	</a>
+	
+
+	</li>
+
+		</ul>
+	</div>
+	<div class="navigation-footer">
+		<ul>
+			<li>
+	<a href="./account?op=4" class="d-flex align-items-center gap-2" title="Profiel">
+		<svg class="svg-sprites"><use href="/assets/svg/icon-user.svg#user"></use></svg>
+		Profiel
+	</a>
+</li><li>
+	<a href="./agenda?4-1.-menu-footer-2-uitloggen&amp;op=4" class="d-flex align-items-center gap-2" title="Uitloggen">
+		<svg class="svg-sprites"><use href="/assets/svg/icon-logout.svg#logout"></use></svg>
+		Uitloggen
+	</a>
+</li>
+		</ul>
+	</div>
+</nav>
+		<div class="l-flex-content">
+			
+	<header class="header">
+		<div class="header-toolbar">
+			<div class="header-toolbar--open-navigation js-navigation" id="id78">
+				<svg class="svg-sprites">
+					<use href="/assets/svg/icon-hamburger.svg#hamburger"></use>
+				</svg>
+			</div>
+			<h1>
+	
+		
+		
+	<span class="is-fixed is-lastcrumb is-single">Agenda</span>
+
+		
+	 
+</h1>
+			
+		</div>
+		
+	</header>
+
+			<div class="popover defaultPopoverWidth" id="id89">
+</div>
+			<div class="popover-overlay"></div>
+			<aside class="s5-aside-slidebar">
+				<div id="id8a">
+	<div class="s5-filterbar-toggle js-filterbar-toggle">
+		<a class="d-flex align-items-center justify-content-center" data-testid="filter-toggle" href="#id75">
+			<svg class="svg-sprites">
+				<use href="/assets/svg/icon-filter.svg#filter"></use>
+			</svg>
+		</a>
+	</div>
+	<div class="s5-filterbar-container" id="id75">
+		
+		<h2>Filter</h2>
+		<form id="id7c" method="post" action="./agenda?4-1.-sidebar-sidebarContent-0-content-form&amp;op=4"><div id="id7c_hf_0" hidden="" class="hidden-fields"></div>
+			
+	
+<fieldset>
+	
+	<div id="id8b" class="mb-4">
+
+		
+			<h5>Lesnotitie</h5>
+			
+		
+
+		
+		
+		<div class="form-select input-group">
+			<select class="s5-input-select" name="fieldset:fieldSetMarkup:inputFields:0:controlGroup:controlGroup_body:formField" id="id79">
+<option selected="selected" value="">Maak je keuze...</option>
+<option value="0">Ja</option>
+<option value="1">Nee</option>
+<option value="2">Beide</option>
+</select>
+			<svg class="svg-sprites position-right" aria-hidden="true">
+				<use href="/assets/svg/icon-chevron-down.svg#chevron-down"></use>
+			</svg>
+		</div>
+	
+	
+
+		
+
+	</div>
+
+	<div id="id8c" class="mb-4">
+
+		
+			<h5>Huiswerk</h5>
+			
+		
+
+		
+		
+		<div class="form-select input-group">
+			<select class="s5-input-select" name="fieldset:fieldSetMarkup:inputFields:1:controlGroup:controlGroup_body:formField" id="id7b">
+<option selected="selected" value="">Maak je keuze...</option>
+<option value="0">Alles</option>
+<option value="1">Huiswerk</option>
+<option value="2">Toets</option>
+<option value="3">Huiswerk en/of toets</option>
+</select>
+			<svg class="svg-sprites position-right" aria-hidden="true">
+				<use href="/assets/svg/icon-chevron-down.svg#chevron-down"></use>
+			</svg>
+		</div>
+	
+	
+
+		
+
+	</div>
+
+</fieldset>
+
+
+			<input type="button" class="btn btn-primary is-hidden" id="id7a" value="Zoeken"/>
+		</form>
+	
+	</div>
+</div>
+			</aside>
+			<section class="content-wrapper js-scroll-wrapper has-small-header">
+				<div id="id76">
+	
+</div>
+					
+		
+	<div class="content has-no-padding">
+		
+	<div class="agenda-filter time-filter">
+	<div class="filter--inner">
+		<div class="d-inline-flex align-items-center gap-1">
+			<a class="btn btn-subtle btn-small" href="./agenda?4-1.-filter-terug&amp;op=4">
+				<svg class="svg-sprites">
+					<use href="/assets/svg/icon-chevron-left.svg#chevron-left"></use>
+				</svg>
+			</a>
+			<a class="btn btn-subtle btn-small" href="./agenda?4-1.-filter-vooruit&amp;op=4">
+				<svg class="svg-sprites">
+					<use href="/assets/svg/icon-chevron-right.svg#chevron-right"></use>
+				</svg>
+			</a>
+		</div>
+		<div class="min-width-120 mb-0 datepicker">
+			<div class="input-group">
+				<input class="form-control-sm" type="text" value="04-03-2026" name="filter:datum" id="id7d"/>
+				<svg class="svg-sprites datepicker" aria-hidden="true">
+					<use href="/assets/svg/icon-calendar.svg#calendar"></use>
+				</svg>
+			</div>
+		</div>
+		<div class="popover-tabs popover-tabs-sm">
+	<div class="popover-tabs" id="id8d">
+		<input type="hidden" value="Lijst" name="filter:weergaveKiezer:choicesContainer:enumHiddenField" id="id7e" class=""/>
+		<ul>
+			<li class="is-selected" data-enumvalue="Lijst">
+				<a>
+					Lijst
+				</a>
+			</li><li data-enumvalue="Werkweek">
+				<a>
+					Werkweek
+				</a>
+			</li><li data-enumvalue="Week">
+				<a>
+					Week
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+		<div class="filter-checkbox" id="id8e">
+			<label>
+				<input type="checkbox" checked="checked" name="filter:lesuren" id="id7f" class=""/>
+				Toon lesuren
+			</label>
+		</div>
+	</div>
+</div>
+	
+	<div class="agenda-list">
+		
+	
+	<div class="agenda-title">maandag 2 maart</div>
+
+	<table class="table table-borderless">
+		<tbody>
+		<tr class="clickable-row" id="id80">
+			<td id="10000000009" class="agenda-item">
+				<div>1-10</div>
+			</td>
+			<td class="agenda-time">
+				<span class="agenda-time top">8:30</span>
+				<br/>
+				<span class="agenda-time bottom">17:00</span>
+			</td>
+			<td class="agenda-details">
+				<span class="agenda-class">BPV </span>
+				<br/>
+				<span class="agenda-teacher"></span>
+			</td>
+			<td class="agenda-homework-icon">
+				
+				
+			</td>
+			<td class="agenda-homework"></td>
+			
+	<td class="agenda-presence-icon">
+		
+	</td>
+
+			<td class="agenda-location"></td>
+		</tr>
+		</tbody>
+	</table>
+
+	
+	<div class="agenda-title">dinsdag 3 maart</div>
+
+	<table class="table table-borderless">
+		<tbody>
+		<tr class="clickable-row" id="id81">
+			<td id="10000000008" class="agenda-item">
+				<div>1-10</div>
+			</td>
+			<td class="agenda-time">
+				<span class="agenda-time top">8:30</span>
+				<br/>
+				<span class="agenda-time bottom">17:00</span>
+			</td>
+			<td class="agenda-details">
+				<span class="agenda-class">BPV </span>
+				<br/>
+				<span class="agenda-teacher"></span>
+			</td>
+			<td class="agenda-homework-icon">
+				
+				
+			</td>
+			<td class="agenda-homework"></td>
+			
+	<td class="agenda-presence-icon">
+		
+	</td>
+
+			<td class="agenda-location"></td>
+		</tr>
+		</tbody>
+	</table>
+
+	
+	<div class="agenda-title">woensdag 4 maart</div>
+
+	<table class="table table-borderless">
+		<tbody>
+		<tr class="clickable-row" id="id82">
+			<td id="10000000003" class="agenda-item">
+				<div>1</div>
+			</td>
+			<td class="agenda-time">
+				<span class="agenda-time top">8:30</span>
+				<br/>
+				<span class="agenda-time bottom">9:15</span>
+			</td>
+			<td class="agenda-details">
+				<span class="agenda-class">Rekenen niveau 3 </span>
+				<br/>
+				<span class="agenda-teacher">aalsbe</span>
+			</td>
+			<td class="agenda-homework-icon">
+				
+				
+			</td>
+			<td class="agenda-homework"></td>
+			
+	<td class="agenda-presence-icon">
+		<svg class="svg-sprites color-icon-success color-icon-success-hover">
+			<use href="/assets/svg/icon-calendar.svg#calendar"></use>
+		</svg>
+	</td>
+
+			<td class="agenda-location">A101</td>
+		</tr><tr class="clickable-row" id="id83">
+			<td id="10000000002" class="agenda-item">
+				<div>2</div>
+			</td>
+			<td class="agenda-time">
+				<span class="agenda-time top">9:15</span>
+				<br/>
+				<span class="agenda-time bottom">10:00</span>
+			</td>
+			<td class="agenda-details">
+				<span class="agenda-class">Burgerschap </span>
+				<br/>
+				<span class="agenda-teacher">bergjo</span>
+			</td>
+			<td class="agenda-homework-icon">
+				
+				
+			</td>
+			<td class="agenda-homework"></td>
+			
+	<td class="agenda-presence-icon">
+		<svg class="svg-sprites color-icon-success color-icon-success-hover">
+			<use href="/assets/svg/icon-calendar.svg#calendar"></use>
+		</svg>
+	</td>
+
+			<td class="agenda-location">A101</td>
+		</tr><tr class="clickable-row" id="id84">
+			<td id="10000000004" class="agenda-item">
+				<div>3-4</div>
+			</td>
+			<td class="agenda-time">
+				<span class="agenda-time top">10:15</span>
+				<br/>
+				<span class="agenda-time bottom">11:45</span>
+			</td>
+			<td class="agenda-details">
+				<span class="agenda-class">Nederlands 2F </span>
+				<br/>
+				<span class="agenda-teacher">coradi</span>
+			</td>
+			<td class="agenda-homework-icon">
+				
+				
+			</td>
+			<td class="agenda-homework"></td>
+			
+	<td class="agenda-presence-icon">
+		<svg class="svg-sprites color-icon-danger color-icon-danger-hover">
+			<use href="/assets/svg/icon-calendar.svg#calendar"></use>
+		</svg>
+	</td>
+
+			<td class="agenda-location">A101</td>
+		</tr><tr class="clickable-row" id="id85">
+			<td id="10000000005" class="agenda-item">
+				<div></div>
+			</td>
+			<td class="agenda-time">
+				<span class="agenda-time top">11:45</span>
+				<br/>
+				<span class="agenda-time bottom">12:30</span>
+			</td>
+			<td class="agenda-details">
+				<span class="agenda-class">Mentoruur </span>
+				<br/>
+				<span class="agenda-teacher">dekkma</span>
+			</td>
+			<td class="agenda-homework-icon">
+				
+				
+			</td>
+			<td class="agenda-homework"></td>
+			
+	<td class="agenda-presence-icon">
+		<svg class="svg-sprites color-icon-success color-icon-success-hover">
+			<use href="/assets/svg/icon-calendar.svg#calendar"></use>
+		</svg>
+	</td>
+
+			<td class="agenda-location">A102</td>
+		</tr><tr class="clickable-row" id="id86">
+			<td id="10000000001" class="agenda-item is-active">
+				<div>6-9</div>
+			</td>
+			<td class="agenda-time">
+				<span class="agenda-time top">13:00</span>
+				<br/>
+				<span class="agenda-time bottom">16:15</span>
+			</td>
+			<td class="agenda-details">
+				<span class="agenda-class">Vakkennis jaar 1 </span>
+				<br/>
+				<span class="agenda-teacher">dekkma</span>
+			</td>
+			<td class="agenda-homework-icon">
+				
+				
+			</td>
+			<td class="agenda-homework"></td>
+			
+	<td class="agenda-presence-icon">
+		<svg class="svg-sprites color-icon-danger color-icon-danger-hover">
+			<use href="/assets/svg/icon-calendar.svg#calendar"></use>
+		</svg>
+	</td>
+
+			<td class="agenda-location">A103</td>
+		</tr>
+		</tbody>
+	</table>
+
+	
+	<div class="agenda-title">donderdag 5 maart</div>
+
+	<table class="table table-borderless">
+		<tbody>
+		<tr class="clickable-row" id="id87">
+			<td id="10000000007" class="agenda-item">
+				<div>1-10</div>
+			</td>
+			<td class="agenda-time">
+				<span class="agenda-time top">8:30</span>
+				<br/>
+				<span class="agenda-time bottom">17:00</span>
+			</td>
+			<td class="agenda-details">
+				<span class="agenda-class">BPV </span>
+				<br/>
+				<span class="agenda-teacher"></span>
+			</td>
+			<td class="agenda-homework-icon">
+				
+				
+			</td>
+			<td class="agenda-homework"></td>
+			
+	<td class="agenda-presence-icon">
+		
+	</td>
+
+			<td class="agenda-location"></td>
+		</tr>
+		</tbody>
+	</table>
+
+	
+	<div class="agenda-title">vrijdag 6 maart</div>
+
+	<table class="table table-borderless">
+		<tbody>
+		<tr class="clickable-row" id="id88">
+			<td id="10000000006" class="agenda-item">
+				<div>1-10</div>
+			</td>
+			<td class="agenda-time">
+				<span class="agenda-time top">8:30</span>
+				<br/>
+				<span class="agenda-time bottom">17:00</span>
+			</td>
+			<td class="agenda-details">
+				<span class="agenda-class">BPV </span>
+				<br/>
+				<span class="agenda-teacher"></span>
+			</td>
+			<td class="agenda-homework-icon">
+				
+				
+			</td>
+			<td class="agenda-homework"></td>
+			
+	<td class="agenda-presence-icon">
+		
+	</td>
+
+			<td class="agenda-location"></td>
+		</tr>
+		</tbody>
+	</table>
+
+		
+	</div>
+
+
+	</div>
+	<div class="content">
+		
+	</div>	
+	
+
+			</section>
+		</div>
+	</div>
+</body>
+</html>
